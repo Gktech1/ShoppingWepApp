@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shopping.Client.Data;
+using Shopping.Client.Dtos;
 using Shopping.Client.Models;
+using Shopping.Client.Shared;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
@@ -10,21 +12,28 @@ namespace Shopping.Client.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientService _httpClientService;
+        private IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
+        public HomeController(ILogger<HomeController> logger, IHttpClientService httpClientService, IConfiguration configuration)
         {
             _logger = logger;
-            _httpClient = httpClientFactory.CreateClient("ShoppingAPIClient");
+            _httpClientService = httpClientService;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync("/product");
-            var content = await response.Content.ReadAsStringAsync();   
-            var productList = JsonConvert.SerializeObject(content);
 
-            return View(productList);
+           // Url = _config.GetSection("ExternalApis")["IMAL"] + "/GetAccountTypes",
+            var request = new GetRequest
+            {
+                Url = _configuration.GetSection("ExternalApis")["BaseUrl"] + "/Product/getproducts",
+
+            };
+            var response = await _httpClientService.SendGetRequest<IEnumerable<Product>>(request);
+
+            return View(response);
         }
 
         public IActionResult Privacy()

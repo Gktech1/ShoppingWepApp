@@ -10,13 +10,13 @@ namespace Shopping.API.Controllers
     {
         private readonly ILogger<ProductController> _logger;
 
-        public ProductController(ILogger<ProductController> logger, IHttpClientFactory httpClientFactory)
+        public ProductController(ILogger<ProductController> logger)
         {
             _logger = logger;
         }
 
 
-        [HttpGet]
+        [HttpGet("getproducts")]
         public IEnumerable<Product> Get()
         {
            var products = ProductContext.Products;

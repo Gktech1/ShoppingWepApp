@@ -4,7 +4,7 @@ using Shopping.Client.Dtos;
 
 namespace Shopping.Client.Shared
 {
-    public class HttpClientService
+    public class HttpClientService : IHttpClientService
     {
         private readonly IHttpClientFactory _clientFactory;
         public HttpClientService(IHttpClientFactory clientFactory)
@@ -17,10 +17,10 @@ namespace Shopping.Client.Shared
             // Validate the request URL to ensure it is a valid external URL
             var url = request.Url;
             var uri = new Uri(url);
-            if (!uri.IsWellFormedOriginalString() || !uri.IsAbsoluteUri || uri.IsLoopback)
+    /*        if (!uri.IsWellFormedOriginalString() || !uri.IsAbsoluteUri || uri.IsLoopback)
             {
                 throw new ArgumentException("Invalid URL");
-            }
+            }*/
 
             var client = _clientFactory.CreateClient();
             var message = new HttpRequestMessage();
