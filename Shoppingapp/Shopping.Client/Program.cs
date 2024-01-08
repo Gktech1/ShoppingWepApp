@@ -1,10 +1,12 @@
+
+
+using Shopping.Client.Shared;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddHttpClient("ShoppingAPIClient", client =>
-{
-    client.BaseAddress = new Uri("http://localhost:5000");
-});
+builder.Services.AddHttpClient<IHttpClientService, HttpClientService>().SetHandlerLifetime(TimeSpan.FromMinutes(5));
+builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 
 builder.Services.AddControllersWithViews();
 
