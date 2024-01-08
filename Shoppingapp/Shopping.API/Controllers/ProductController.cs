@@ -8,15 +8,15 @@ namespace Shopping.API.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-            private readonly ILogger<ProductController> _logger;
+        private readonly ILogger<ProductController> _logger;
 
-            public ProductController(ILogger<ProductController> logger)
-            {
-                _logger = logger;
-            }
+        public ProductController(ILogger<ProductController> logger, IHttpClientFactory httpClientFactory)
+        {
+            _logger = logger;
+        }
 
 
-        [HttpGet(Name = "GetProducts")]
+        [HttpGet]
         public IEnumerable<Product> Get()
         {
            var products = ProductContext.Products;
